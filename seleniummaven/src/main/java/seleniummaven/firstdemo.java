@@ -1,17 +1,20 @@
 package seleniummaven;
 
 import java.util.List;
-
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.swing.plaf.basic.BasicArrowButton;
-
+import org.openqa.selenium.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.v102.systeminfo.SystemInfo;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -23,14 +26,17 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class firstdemo
 {
 	String URL = "https://opensource-demo.orangehrmlive.com/";
+	String URL_2 = "https://www.youtube.com/";
     WebDriver driver;
-
+    
+    
 	@BeforeTest
 	public void BT() throws InterruptedException
 	{
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 	driver.get(URL);
+	//driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 	
 
@@ -79,6 +85,7 @@ public class firstdemo
 	}
 
 	
+	
 	/* click on Maintance and follow few steps*/
 	@Test (enabled = false, priority = 2)
 	public void TestCase3() throws InterruptedException
@@ -91,8 +98,9 @@ public class firstdemo
 	}
 	
 	
+	
 /* The below code is to click on admin, apply select and delete a selected data in the table by getting the size of it */
-	@Test(enabled = true, priority = 3)
+	@Test(enabled = false, priority = 3)
 	public void TestCase4() throws InterruptedException
 	{
 		Thread.sleep(2000);
@@ -111,8 +119,8 @@ public class firstdemo
 	    act.sendKeys(ele,Keys.ARROW_DOWN).click().build().perform();
 	    act.sendKeys(ele,Keys.ENTER).click().build().perform();
 	    
-	    WebElement mouse_over = driver.findElement(By.linkText("Add Employee"));
-	    act.moveToElement(mouse_over).click().build().perform();
+//	    WebElement mouse_over = driver.findElement(By.linkText("Add Employee"));
+//	    act.moveToElement(mouse_over).click().build().perform();
 	    
 	    WebElement search_btn = driver.findElement(By.xpath("//*[@class='oxd-button oxd-button--medium oxd-button--secondary orangehrm-left-space']"));
 	    Thread.sleep(2000);
@@ -150,31 +158,29 @@ public class firstdemo
 	
 	}
 	
+	
+	
+	
 	/*  This below code is to get all the links in the page */
-	@Test (enabled = true, priority = 4)
+	@Test (enabled = false, priority = 4)
 	public void TestLinks()
 	{
 		
-		List<WebElement> link = driver.findElements(By.tagName("a"));
-		   System.out.println(" afvshjbf "+ link.size());
-//		   
-//		   for(int i=0;i<link.size();i++)
-//		   {
-//			   System.out.println(link.get(i).getText());
-//		   }
-		   
-		   for (int j=0;j<link.size();j++)
-		   {
-			   System.out.println(link.get(j).getText());
-			   
-		   }
+		List<WebElement> links = driver.findElements(By.tagName("a"));
+		System.out.println("Total number of links: "+links.size()); 
 		
+		for(int i=0;i<=links.size();i++)
+		{
+			System.out.println(links.get(i).getText()); 
+			System.out.println(links.get(i).getAttribute("href"));
+		}
 	}
+	
 	
 	
 	/* To check which links are working in that page */
 	@Test (enabled = false, priority = 5)
-	public void Test_Wokring_linkg()
+	public void Test_Working_links()
 	{
 		List<WebElement> wlinks = driver.findElements(By.tagName("a"));
 		String[] LS = new String [wlinks.size()];
@@ -187,6 +193,25 @@ public class firstdemo
 			i++;
 		}
 		
+	}
+	
+	/* Window Handle */
+	@Test (enabled = true, priority = 6)
+	public void windowHandling() throws InterruptedException
+	{
+		driver.getWindowHandle();
+	
+		
+			
+		// Opens a new tab and switches to new tab
+		driver.switchTo().newWindow(WindowType.WINDOW);
+		
+		//Navigates to new tab and opens the new link
+		driver.navigate().to(URL_2);
+		
+		Thread.sleep(3000);
+		driver.quit();
+			   
 	}
 
 		@AfterTest(enabled = false)

@@ -6,7 +6,7 @@
       <class name="seleniummaven.firstdemo">
         <methods>
           <include name="AT"/>
-          <include name="TestCase4"/>
+          <include name="TestLinks"/>
           <include name="BT"/>
         </methods>
       </class> <!-- seleniummaven.firstdemo -->
